@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    if (window.DeviceMotionEvent) {
+        window.addEventListener("devicemotion", motion, false);
+    } else {
+        console.log("DeviceMotionEvent is not supported");
+    }
+
+    const [accel, setAccel] = useState({ x: 0, y: 0, z: 0 })
+
+    function motion(event: DeviceMotionEvent) {
+        if (event.acceleration === null) {
+            return;
+        }
+        setAccel({ x: event.acceleration.x!!, y: event.acceleration.y!!, z: event.acceleration.z!! })
+    }
+
+    return (
+        <div>
+            Accel: {accel.x} {accel.y} {accel.z}
+        </div>
+    );
 }
 
 export default App;
